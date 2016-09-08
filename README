@@ -15,3 +15,14 @@ See also:
 
 The code is LGPLv2+. We need to make sure, that we are able to freely
 share and copy code with the userspace library, which has the same licence.
+
+[Chenxuan Li's comments about kdbus vs dbus]
+Here's a summary of D-Bus performance issues [From http://lwn.net/Articles/580194/]:
+1. The problem here is the fundamental inefficiencies of the user-space D-Bus implementation; a call-return message requires ten message copies, four message validations, and four context switches
+2. D-Bus is not available at early boot - dbus daemon need to be started
+
+Kdbus improves to:
+1. It can be reasonably used for gigabyte-sized message streams. It can perform zero-copy message passing, but even in the worst case, a message and its response are passed with no more than two copy operations, two validations, and two context switches.
+2. Kdbus is always available to the system (no need to wait for the D-Bus daemon to be started)
+
+
